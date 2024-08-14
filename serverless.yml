@@ -1,0 +1,31 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: johanpham2711
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: serverless-demo
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+
+plugins:
+  - serverless-s3-sync
+
+custom:
+  s3Sync:
+    - bucketName: my-serverless-demo-bucket-12334
+      localDir: public
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
+
+resources:
+  Resources:
+    MyBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: my-serverless-demo-bucket-12334
